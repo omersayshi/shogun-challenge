@@ -17,7 +17,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.get('/propertries', (req, res) => {
+app.get('/properties', (req, res) => {
   try {
     const { sortby: sorters } = req.body;
     let query = '';
