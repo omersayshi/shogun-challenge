@@ -37,10 +37,14 @@ app.get('/propertries', (req, res) => {
     }
 
     db.query(query, (err, dbReturn) => {
-      res.send(dbReturn.rows);
+      try {
+        res.status(200).send({ properties: dbReturn.rows });
+      } catch (err) {
+        res.status(400).send({ error: err.stack });
+      }
     });
   } catch (err) {
-    return console.error(err.stack);
+    res.status(400).send({ error: err.stack });
   }
 });
 
@@ -50,11 +54,15 @@ app.get('/property/:propertyId', (req, res) => {
     db.query(
       named(query)({ propId: req.params.propertyId }),
       (err, dbReturn) => {
-        res.send(dbReturn.rows);
+        try {
+          res.status(200).send(dbReturn.rows[0]);
+        } catch (err) {
+          res.status(400).send({ error: err.stack });
+        }
       }
     );
   } catch (err) {
-    return console.error(err.stack);
+    res.status(400).send({ error: err.stack });
   }
 });
 
